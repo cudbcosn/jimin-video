@@ -1,0 +1,498 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#f5f3ef">
+
+<title>JIMIN VIDEO ARCHIVE | 智旻视频收藏馆</title>
+
+<style>
+:root {
+  --bg: #F0F6FA;
+  --paper: #FFFFFF;
+  --text: #34495A;
+  --muted: #8A9EAD;
+  --line: #DCE7EF;
+  --accent: #8FB9D6;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont,
+    "Helvetica Neue", "PingFang SC", sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.page {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 38px 22px 60px;
+}
+
+.topline {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 10px;
+  letter-spacing: 2px;
+}
+
+.hero {
+  padding: 58px 0 38px;
+}
+
+.eyebrow {
+  color: var(--accent);
+  font-size: 11px;
+  letter-spacing: 3px;
+  margin-bottom: 18px;
+}
+
+h1 {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(35px, 7vw, 66px);
+  font-weight: 400;
+  line-height: 1.08;
+  letter-spacing: -1.8px;
+  margin: 0;
+}
+
+.subtitle {
+  margin-top: 16px;
+  font-size: 14px;
+  color: var(--muted);
+  letter-spacing: 2px;
+}
+
+.intro {
+  max-width: 520px;
+  margin-top: 24px;
+  color: #777169;
+  font-size: 13px;
+  line-height: 2;
+}
+
+.stats {
+  display: flex;
+  gap: 32px;
+  padding: 20px 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 28px;
+}
+
+.stat-label {
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 1.5px;
+}
+
+.stat-value {
+  margin-top: 7px;
+  font-family: Georgia, serif;
+  font-size: 24px;
+}
+
+.section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 34px 0 18px;
+}
+
+.section-heading h2 {
+  margin: 0;
+  font-family: Georgia, serif;
+  font-weight: 400;
+  font-size: 24px;
+}
+
+.section-heading span {
+  color: var(--muted);
+  font-size: 10px;
+  letter-spacing: 1px;
+}
+
+.filters {
+  display: flex;
+  gap: 9px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+
+.filter {
+  border: 1px solid var(--line);
+  padding: 9px 14px;
+  border-radius: 30px;
+  background: transparent;
+  color: #777169;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.filter.active {
+  background: #B7D4E8;
+  color: #34495A;
+  border-color: #B7D4E8;
+}
+
+.video-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px 18px;
+}
+
+.video-card {
+  min-width: 0;
+  background: var(--paper);
+  border: 1px solid #e8e3dc;
+  padding: 9px;
+  transition: transform .2s ease;
+}
+
+.video-card:hover {
+  transform: translateY(-3px);
+}
+
+.cover {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  background: #e9e4dc;
+  position: relative;
+  overflow: hidden;
+}
+
+.cover img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.play-icon {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(255, 254, 250, .92);
+  color: #51483f;
+  font-size: 15px;
+  padding-left: 3px;
+}
+
+.card-info {
+  padding: 15px 7px 9px;
+}
+
+.card-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  color: var(--muted);
+  font-size: 10px;
+  letter-spacing: 1px;
+}
+
+.card-title {
+  font-size: 15px;
+  line-height: 1.6;
+  margin-top: 10px;
+  overflow-wrap: anywhere;
+}
+
+.card-category {
+  display: inline-block;
+  margin-top: 10px;
+  font-size: 10px;
+  color: var(--accent);
+  border-bottom: 1px solid #d8cabc;
+  padding-bottom: 3px;
+}
+
+.empty {
+  display: none;
+  padding: 35px 10px;
+  color: var(--muted);
+  text-align: center;
+  font-size: 13px;
+  line-height: 2;
+}
+
+.note {
+  margin-top: 42px;
+  padding: 22px 0;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 2;
+  text-align: center;
+}
+
+.footer {
+  text-align: center;
+  color: #a19a90;
+  font-family: Georgia, serif;
+  font-size: 12px;
+  letter-spacing: 2px;
+  padding-top: 18px;
+}
+
+@media (max-width: 520px) {
+  .page {
+    padding: 25px 17px 42px;
+  }
+
+  .hero {
+    padding-top: 43px;
+  }
+
+  .video-grid {
+    gap: 14px 10px;
+  }
+
+  .video-card {
+    padding: 6px;
+  }
+
+  .card-info {
+    padding: 11px 4px 7px;
+  }
+
+  .card-title {
+    font-size: 13px;
+  }
+
+  .card-top {
+    font-size: 9px;
+  }
+
+  .play-icon {
+    width: 34px;
+    height: 34px;
+  }
+}
+</style>
+</head>
+
+<body>
+<main class="page">
+
+  <div class="topline">
+    <span>JIMIN ARCHIVE</span>
+    <span>VIDEO COLLECTION · 2026</span>
+  </div>
+
+  <header class="hero">
+    <div class="eyebrow">PARK JIMIN · VIDEO ARCHIVE</div>
+    <h1>JIMIN<br>VIDEO ARCHIVE</h1>
+    <div class="subtitle">朴智旻 · 视频收藏馆</div>
+    <p class="intro">
+      把想要记住的瞬间，留在影像里。<br>
+      舞台、笑容、声音，以及那些值得反复回看的时刻。
+    </p>
+  </header>
+
+  <section class="stats">
+    <div>
+      <div class="stat-label">COLLECTION</div>
+      <div class="stat-value" id="totalCount">00</div>
+    </div>
+    <div>
+      <div class="stat-label">CATEGORIES</div>
+      <div class="stat-value">05</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-heading">
+      <h2>Video Collection</h2>
+      <span>影像收藏</span>
+    </div>
+
+    <div class="filters" id="filters">
+      <button class="filter active" data-category="全部">全部</button>
+      <button class="filter" data-category="舞台">舞台</button>
+      <button class="filter" data-category="采访">采访</button>
+      <button class="filter" data-category="幕后">幕后</button>
+      <button class="filter" data-category="日常">日常</button>
+      <button class="filter" data-category="其他">其他</button>
+    </div>
+
+    <div class="video-grid" id="videoGrid"></div>
+
+    <div class="empty" id="emptyMessage">
+      这个分类暂时还没有收藏视频。<br>
+      等待下一段值得珍藏的影像。
+    </div>
+  </section>
+
+  <div class="note">
+    Every moment is worth remembering.<br>
+    本页面用于个人收藏与整理，请尊重原视频作者及版权。
+  </div>
+
+  <footer class="footer">
+    FOR JIMIN, WITH LOVE.
+  </footer>
+
+</main>
+
+<script>
+/*
+  添加视频时，复制一组对象并修改内容即可。
+
+  video：视频播放地址
+  cover：封面图片地址
+  category：舞台、采访、幕后、日常、其他
+
+  示例视频目前没有填写播放地址，
+  添加自己的视频链接后才可以播放。
+*/
+
+const VIDEO_LIST = [
+  {
+    id: "001",
+    title: "值得珍藏的瞬间 001",
+    date: "待补充",
+    category: "舞台",
+    cover: "",
+    video: ""
+  },
+  {
+    id: "002",
+    title: "智旻的采访时刻",
+    date: "待补充",
+    category: "采访",
+    cover: "",
+    video: ""
+  },
+  {
+    id: "003",
+    title: "镜头之外的智旻",
+    date: "待补充",
+    category: "幕后",
+    cover: "",
+    video: ""
+  }
+];
+
+const grid = document.getElementById("videoGrid");
+const emptyMessage = document.getElementById("emptyMessage");
+
+document.getElementById("totalCount").textContent =
+  String(VIDEO_LIST.length).padStart(2, "0");
+
+function renderVideos(category) {
+  grid.innerHTML = "";
+
+  const videos = VIDEO_LIST.filter(function(video) {
+    return category === "全部" || video.category === category;
+  });
+
+  emptyMessage.style.display = videos.length ? "none" : "block";
+
+  videos.forEach(function(video) {
+    const card = document.createElement("a");
+    card.className = "video-card";
+
+    if (video.video) {
+      card.href = video.video;
+      card.target = "_blank";
+      card.rel = "noopener noreferrer";
+    } else {
+      card.href = "#";
+      card.addEventListener("click", function(event) {
+        event.preventDefault();
+        alert("这段视频还没有添加播放地址。");
+      });
+    }
+
+    const cover = document.createElement("div");
+    cover.className = "cover";
+
+    if (video.cover) {
+      const img = document.createElement("img");
+      img.src = video.cover;
+      img.alt = video.title;
+      img.loading = "lazy";
+      cover.appendChild(img);
+    }
+
+    const play = document.createElement("div");
+    play.className = "play-icon";
+    play.textContent = "▶";
+    cover.appendChild(play);
+
+    const info = document.createElement("div");
+    info.className = "card-info";
+
+    const top = document.createElement("div");
+    top.className = "card-top";
+
+    const number = document.createElement("span");
+    number.textContent = "NO. " + video.id;
+
+    const date = document.createElement("span");
+    date.textContent = video.date || "待补充";
+
+    top.appendChild(number);
+    top.appendChild(date);
+
+    const title = document.createElement("div");
+    title.className = "card-title";
+    title.textContent = video.title;
+
+    const categoryTag = document.createElement("div");
+    categoryTag.className = "card-category";
+    categoryTag.textContent = video.category;
+
+    info.appendChild(top);
+    info.appendChild(title);
+    info.appendChild(categoryTag);
+
+    card.appendChild(cover);
+    card.appendChild(info);
+
+    grid.appendChild(card);
+  });
+}
+
+document.querySelectorAll(".filter").forEach(function(button) {
+  button.addEventListener("click", function() {
+    document.querySelectorAll(".filter").forEach(function(item) {
+      item.classList.remove("active");
+    });
+
+    button.classList.add("active");
+    renderVideos(button.dataset.category);
+  });
+});
+
+renderVideos("全部");
+</script>
+
+</body>
+</html>
+
+                 
